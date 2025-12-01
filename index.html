@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Inventario con Escáner de Códigos</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; background-color: #f4f4f4; color: #333; text-align: center; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #007bff; font-size: 1.5em; }
+        
+        /* Marco para la cámara: Contenedor fijo con borde y sombra */
+        .camara-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 640px; 
+            height: 480px; 
+            margin: 20px auto; 
+            border: 3px solid #007bff; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+            overflow: hidden; /* Evita desbordes */
+            background: #000; /* Fondo negro para simular visor */
+        }
+        #interactive { 
+            width: 100%; 
+            height: 100%; 
+            display: block; 
+            object-fit: cover; /* Ajusta el video sin distorsión */
+        }
+        .camara-activa { 
+            position: absolute; top: 10px; left: 10px; background: rgba(0,255,0,0.8); color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px; display: none; 
+        } /* Indicador cuando la cámara está activa */
+        
+        .verde { background-color: #d4edda; color: #155724; }
+        .morado { background-color: #e2e3e5; color: #383d41; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; font-size: 0.9em; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        button { margin: 8px; padding: 15px 25px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; min-height: 48px; transition: background 0.3s; }
+        button:hover, button:active { background-color: #0056b3; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        input { padding: 12px; width: 90%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px; margin: 10px; font-size: 16px; }
+        #result { margin: 20px 0; font-weight: bold; font-size: 1em; }
+        .description { background: #e9ecef; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-size: 0.9em; }
+        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+        .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 90%; max-width: 600px; border-radius: 10px; font-size: 0.9em; }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close:hover, .close:active { color: black; }
+        
+        /* Media queries para móviles: Marco más pequeño */
+        @media (max-width: 768px) {
+            body { padding: 5px; }
+            .container { padding: 10px; }
+            h1 { font-size: 1.2em; }
+            .camara-container { max-width: 100%; height: 300px; } /* Más compacto en móvil */
+            button { padding: 12px 20px; font-size: 14px; min-height: 44px; }
+            input { width: 95%; font-size: 14px; }
+            table { font-size: 0.8em; }
+            th, td { padding: 6px; }
+        }
+    </style>
+    <!-- Librerías externas -->
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Inventario de biblioteca a partir de escaneo de códigos de barras</h1>
+        <div class="description">
+            <h3>Descripción de la App</h3>
+            <p>Esta aplicación te permite escanear códigos de barras usando la cámara de tu dispositivo. Verifica el código y lo marca como "encontrado" y actualiza la tabla. Puedes ingresar códigos manualmente, descargar el inventario actualizado. Ideal para inventarios rápidos y precisos.</p>
+        </div>
+        <button id="guiaBtn">Guía de Uso</button>
+        <button id="iniciarCamaraBtn">Iniciar Cámara</button>
+        <div class="camara-container">
+            <div id="interactive"></div>
+            <div id="camaraIndicador" class="camara-activa">Cámara Activa</div>
+        </div>
+        <div id="result"></div>
+        <input type="text" id="codigoManual" placeholder="Ingresa código manualmente (ej. B123456)">
+        <br>
+        <button id="procesarBtn" title="Procesa el código ingresado manualmente">Procesar Código Manual</button>
+        <button id="descargarBtn" title="Descarga el inventario actualizado como archivo Excel">Descargar Inventario (Excel)</button>
+        <button id="resetBtn" title="Borra todo el inventario y recarga desde Excel inicial">Resetear Inventario</button>
+        <table id="inventarioTable">
+            <thead>
+                <tr><th>Código</th><th>Estado</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- Modal para Guía de Uso -->
+    <div id="guiaModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeGuia">&times;</span>
+            <h2>Guía de Uso</h2>
+            <ol>
+                <li><strong>Cargar Inventario Inicial:</strong> Sube tu Excel antiguo a GitHub para que la app lo importe automáticamente al cargar.</li>
+                <li><strong>Escanear Códigos:</strong> Toca "Iniciar Cámara", permite permisos y apunta al código de barras. Solo se procesan códigos que empiecen con 'B' y tengan al menos 7 caracteres.</li>
+                <li><strong>Procesar Manualmente:</strong> Ingresa un código en el campo de texto y toca "Procesar Código Manual".</li>
+                <li><strong>Ver Resultados:</strong> Los códigos encontrados se verifican en la tabla.</li>
+                <li><strong>Descargar Excel:</strong> Toca para guardar el inventario actualizado en tu dispositivo.</li>
+                <li><strong>Resetear:</strong> Borra el inventario local y recarga desde el Excel inicial.</li>
+            </ol>
+            <p><strong>Nota:</strong> Los datos se guardan en tu navegador (localStorage). Si cierras la app, se pierden a menos que descargues el Excel.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
