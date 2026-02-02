@@ -109,20 +109,50 @@
     </div>
 
     <!-- Modal para Guía de Uso -->
-    <div id="guiaModal" class="modal">
-        <div class="modal-content">
-            <span class="close" id="closeGuia">&times;</span>
-            <h2>Guía de Uso / How to Use</h2>
-            <ol>
-                <li><strong>Escanear Códigos:</strong> Toca "Iniciar Cámara", permite permisos y apunta al código de barras.</li><strong>Scan Codes:</strong> Tap “Start Camera”, allow access, and scan the barcode.
-                <li><strong>Procesar Manualmente:</strong> Ingresa un código en el campo de texto y toca "Procesar Código Manual".</li>
-                <li><strong>Ver Resultados:</strong> Los códigos encontrados se verifican en la tabla.</li>
-                <li><strong>Descargar Excel:</strong> Toca para guardar el inventario actualizado en tu dispositivo.</li>
-                <li><strong>Resetear:</strong> Borra el inventario local.</li>
-            </ol>
-            <p><strong>Nota:</strong> Los datos se guardan en tu navegador (localStorage). Si cierras la app, no se pierden a menos de que borres el caché de tu navegador.</p>
-        </div>
+<div id="guiaModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeGuia">&times;</span>
+        <h2>Guía de Uso / How to Use</h2>
+
+        <ol>
+            <li>
+                <strong>Escanear Códigos:</strong>
+                Toca "Iniciar Cámara", permite permisos y apunta al código de barras.<br>
+                <em>Scan Codes:</em> Tap “Start Camera”, allow access, and scan the barcode.
+            </li>
+
+            <li>
+                <strong>Procesar Manualmente:</strong>
+                Ingresa un código en el campo de texto y toca "Procesar Código Manual".<br>
+                <em>Manual Processing:</em> Enter a code in the text field and tap “Process Manual Code”.
+            </li>
+
+            <li>
+                <strong>Ver Resultados:</strong>
+                Los códigos encontrados se verifican en la tabla.<br>
+                <em>View Results:</em> Scanned codes are verified in the table.
+            </li>
+
+            <li>
+                <strong>Descargar Excel:</strong>
+                Toca para guardar el inventario actualizado en tu dispositivo.<br>
+                <em>Download Excel:</em> Save the updated inventory to your device.
+            </li>
+
+            <li>
+                <strong>Resetear:</strong>
+                Borra el inventario local.<br>
+                <em>Reset:</em> Clears the local inventory.
+            </li>
+        </ol>
+
+        <p class="nota">
+            <strong>Nota:</strong> Los datos se guardan en tu navegador (localStorage).  
+            Si cierras la app, no se pierden a menos de que borres el caché.<br>
+            <em>Note:</em> Data is stored locally in your browser (localStorage).
+        </p>
     </div>
+</div>
 
     <script src="script.js"></script>
 </body>
