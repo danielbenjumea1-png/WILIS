@@ -128,7 +128,7 @@ function procesarCodigo(codigo) {
         codigoAFila[codigo] = inventario.length - 1;
     }
 
-    setResult(`✔ Código. / Code. ${codigo} marcado como encontrado. / It has been marked as found`, 'green');
+    setResult(`✔ Código ${codigo} marcado como encontrado/it has been marked as found`, 'green');
     guardarInventario();
     actualizarTabla();
 }
@@ -186,7 +186,7 @@ function resetearInventario() {
     actualizarTabla();
     // intentar recargar excel inicial
     cargarExcelInicial();
-    setResult('Inventario reseteado.', 'blue');
+    setResult('Inventario reseteado. / Inventory has been reset', 'blue');
 }
 
 // ---------- MODAL GUIA ----------
