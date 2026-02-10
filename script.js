@@ -237,3 +237,45 @@ safeAddListener('resetBtn', 'touchstart', resetearInventario);
     }
 })();
 
+async function cruzarInventarioExcel() {
+  const inv = document.getElementById("excelInventario").files[0];
+  const esc = document.getElementById("excelEscaneo").files[0];
+
+  if (!inv || !esc) {
+    alert("Selecciona ambos archivos Excel");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("inventario", inv);
+  formData.append("escaneo", esc);
+
+  setResult("Procesando cruce de inventario...", "blue");
+
+  const response = await fetch("/api/cruzar-inventario", {
+    method: "POST",
+    body: formData
+  });
+
+  if (!response.ok) {
+    setResult("Error en el cruce de inventario", "red");
+    return;
+  }
+
+  const blob = await response.blob();
+  const url = window.URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "inventario_cruzado.xlsx";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  setResult("Cruce finalizado. Archivo descargado.", "green");
+}
+
+// Listener seguro
+safeAddListener("cruceExcelBtn", "click", cruzarInventarioExcel);
+safeAddListener("cruceExcelBtn", "touchstart", cruzarInventarioExcel);
+
