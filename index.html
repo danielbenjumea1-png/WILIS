@@ -120,6 +120,23 @@
         <button id="procesarBtn" title="Procesa el código ingresado manualmente">Procesar Código Manual</button>
         <button id="descargarBtn" title="Descarga el inventario actualizado como archivo Excel">Descargar Inventario (Excel)</button>
         <button id="resetBtn" title="Borra todo el inventario y recarga desde Excel inicial">Resetear Inventario</button>
+<!-- =============================== -->
+<!-- CRUCE DE INVENTARIO (EXCEL vs EXCEL) -->
+<!-- =============================== -->
+
+<div style="margin-top: 20px; padding: 15px; border-top: 1px solid #ccc;">
+    <h3>Cruce de Inventario (Excel vs Excel)</h3>
+
+    <input type="file" id="excelInventario" accept=".xlsx,.xls">
+    <br><br>
+
+    <input type="file" id="excelEscaneo" accept=".xlsx,.xls">
+    <br><br>
+
+    <button id="cruceExcelBtn">
+        Cruzar Inventario
+    </button>
+</div>
         <table id="inventarioTable">
             <thead>
                 <tr><th>Código</th><th>Estado</th></tr>
