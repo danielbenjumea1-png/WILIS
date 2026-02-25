@@ -285,32 +285,39 @@ async function cruzarInventarioExcel() {
     formData.append("inventario", inv);
     formData.append("escaneo", esc);
 
-    try {
-        const response = await fetch("/api/cruzar-inventario", {
-            method: "POST",
-            body: formData
-        });
+try {
+    const formData = new FormData();
+    formData.append("inventario", inv);
+    formData.append("escaneo", esc);
 
-        if (!response.ok) throw new Error();
+    const response = await fetch("/api/cruzar_inventario", {
+        method: "POST",
+        body: formData,
+    });
 
-        const blob = await response.blob();
+    if (!response.ok) throw new Error("Error en el servidor al cruzar inventarios");
 
-        clearInterval(intervalo);
-        barra.style.width = "100%";
-        texto.textContent = "100%";
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "inventario_cruzado.xlsx";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
 
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "inventario_cruzado.xlsx";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
+    // Mostrar coincidencias exactas que tu API puede retornar en headers
+    const coincidencias = response.headers.get("X-Coincidencias") || 0;
+    setResult(`✅ Cruce completado. Coincidencias exactas: ${coincidencias}`, 'green');
 
-    } catch (err) {
-        clearInterval(intervalo);
-        alert("Error durante el cruce de inventarios");
-    }
+    clearInterval(intervalo);
+    barra.style.width = "100%";
+    texto.textContent = "100%";
+
+} catch (err) {
+    clearInterval(intervalo);
+    alert("Error durante el cruce de inventarios: " + err.message);
+}
 }
 
 // Listeners seguros (clic + móvil)
