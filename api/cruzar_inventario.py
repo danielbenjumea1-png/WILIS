@@ -47,6 +47,8 @@ def cruzar_inventario():
 
         # Marcar coincidencias exactas
         coincidencias = 0
+        inventario_codigos = set(df_inventario['codigo'])
+        
         for row in range(2, ws.max_row + 1):
             codigo = str(ws.cell(row=row, column=col_codigo).value).strip()
             if codigo in codigos_escaneo:
