@@ -137,12 +137,24 @@ function procesarCodigo(codigo) {
 function procesarManual() {
     const el = document.getElementById('codigoManual');
     if (!el) return;
-    const codigo = el.value.trim().toUpperCase();
-    if (!codigo) {
+
+    const texto = el.value.trim().toUpperCase();
+
+    if (!texto) {
         alert('Ingresa un código válido. / Enter a valid code.');
         return;
     }
-    procesarCodigo(codigo);
+
+    // Separar por comas, saltos de línea o espacios
+    const codigos = texto.split(/[, \n]+/);
+
+    codigos.forEach(codigo => {
+        const limpio = codigo.trim();
+        if (limpio) {
+            procesarCodigo(limpio);
+        }
+    });
+
     el.value = '';
 }
 
