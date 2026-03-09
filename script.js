@@ -106,7 +106,7 @@ function iniciarQuagga() {
             let code = result.codeResult.code || '';
             code = code.toString().toUpperCase().replace(/[^A-Z0-9]/g, '');
             // Filtro según la regla: inicia con 'B' y >=7 caracteres
-            
+            if (!code.startsWith('B') || code.length < 7) return;
             procesarCodigo(code);
         } catch (e) {
             console.warn('Error procesando resultado Quagga:', e);
