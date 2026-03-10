@@ -86,7 +86,7 @@ function iniciarQuagga() {
         },
         locator: { patchSize: "medium", halfSample: true },
         numOfWorkers: 2,
-        decoder: { readers: ["code_128_reader", "ean_reader", "ean_8_reader", "code_39_reader", "upc_reader"] },
+        decoder: { readers: ["code_128_reader", "ean_reader"] },
         locate: true
     }, function(err) {
         if (err) {
@@ -105,9 +105,6 @@ function iniciarQuagga() {
         try {
             let code = result.codeResult.code || '';
             code = code.toString().toUpperCase().replace(/[^A-Z0-9]/g, '');
-
-            // Filtro según la regla: inicia con 'B' y >=7 caracteres 
-            if (!code.startsWith('B') || code.length < 7) return;
             
             procesarCodigo(code);
         } catch (e) {
