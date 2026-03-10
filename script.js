@@ -84,7 +84,7 @@ function iniciarQuagga() {
                 facingMode: "environment"
             }
         },
-        locator: { patchSize: "large", halfSample: true },
+        locator: { patchSize: "medium", halfSample: true },
         numOfWorkers: 2,
         decoder: { readers: ["code_128_reader"] },
         locate: true
@@ -104,7 +104,7 @@ function iniciarQuagga() {
     Quagga.onDetected(function(result) {
         try {
             let code = result.codeResult.code || '';
-            code = code.toString().toUpperCase().replace(/[^A-Z0-9]/g, '');
+            code = code.toString();
             
             procesarCodigo(code);
         } catch (e) {
