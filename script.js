@@ -84,7 +84,7 @@ function iniciarQuagga() {
                 facingMode: "environment"
             }
         },
-        locator: { patchSize: "medium", halfSample: true },
+        locator: { patchSize: "large", halfSample: true },
         numOfWorkers: 2,
         decoder: { readers: ["code_128_reader"] },
         locate: true
