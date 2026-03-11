@@ -88,7 +88,7 @@ function iniciarQuagga() {
         },
         locator: { patchSize: "large", halfSample: false },
         numOfWorkers: Math.min(navigator.hardwareConcurrency || 4, 4),
-        decoder: { readers: ["code_128_reader", "ean_reader"], multiple: false },
+        decoder: { readers: ["code_128_reader", "ean_13_reader"], multiple: false },
         locate: true,
         frequency: 10
     }, function(err) {
