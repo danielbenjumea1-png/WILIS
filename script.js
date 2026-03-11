@@ -125,7 +125,7 @@ function iniciarQuagga() {
             contador = 1;
             }
 
-            if (contador >= 2) {
+            if (contador >= 3) {
             procesarCodigo(code);
             contador = 0;
             }
