@@ -84,12 +84,14 @@ function iniciarQuagga() {
                 width: { ideal: 640 },
                 height: { ideal: 480 },
                 facingMode: "environment"
+                
             }
         },
-        locator: { patchSize: "medium", halfSample: true },
-        numOfWorkers: 2,
-        decoder: { readers: ["code_128_reader", "ean_reader"] },
-        locate: true
+        locator: { patchSize: "large", halfSample: false },
+        numOfWorkers: Math.min(navigator.hardwareConcurrency || 4, 4)
+        decoder: { readers: ["code_128_reader", "ean_reader"], multiple: false },
+        locate: true,
+        frequency: 10
     }, function(err) {
         if (err) {
             console.error('Quagga init error:', err);
