@@ -83,12 +83,11 @@ function iniciarQuagga() {
             constraints: {
                 width: { ideal: 640 },
                 height: { ideal: 480 },
-                facingMode: "environment"
-                
+                facingMode: "environment"   
             }
         },
         locator: { patchSize: "large", halfSample: false },
-        numOfWorkers: Math.min(navigator.hardwareConcurrency || 4, 4)
+        numOfWorkers: Math.min(navigator.hardwareConcurrency || 4, 4),
         decoder: { readers: ["code_128_reader", "ean_reader"], multiple: false },
         locate: true,
         frequency: 10
