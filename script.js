@@ -81,8 +81,8 @@ function iniciarQuagga() {
             type: "LiveStream",
             target: document.querySelector('#interactive'),
             constraints: {
-                width: { ideal: 1280 },
-                height: { ideal: 720 },
+                width: { ideal: 960 },
+                height: { ideal: 540 },
                 facingMode: "environment"   
             }
         },
@@ -90,7 +90,7 @@ function iniciarQuagga() {
         numOfWorkers: Math.min(navigator.hardwareConcurrency || 4, 4),
         decoder: { readers: ["code_128_reader", "ean_reader"], multiple: false },
         locate: true,
-        frequency: 5
+        frequency: 10
     }, function(err) {
         if (err) {
             console.error('Quagga init error:', err);
