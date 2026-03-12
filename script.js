@@ -81,8 +81,8 @@ function iniciarQuagga() {
             type: "LiveStream",
             target: document.querySelector('#interactive'),
             constraints: {
-                width: { ideal: 960 },
-                height: { ideal: 540 },
+                width: { ideal: 640 },
+                height: { ideal: 480 },
                 facingMode: "environment"   
             }
         },
